@@ -21,5 +21,20 @@ public class DevUserServiceImpl implements DevUserService {
 		}
 		return user;
 	}
+	public Integer register(DevUser devUser) {
+		return mapper.register(devUser);
+	}
+
+	public DevUser checkDevCode(String devCode) {
+		return mapper.checkDevCode(devCode);
+	}
+	public Integer updateDevUser(DevUser devuser) {
+		// TODO Auto-generated method stub
+		return mapper.updateDevUser(devuser);
+	}
+	public DevUser getDevUserById(Integer id) {
+		// TODO Auto-generated method stub
+		return mapper.getDevUserById(id);
+	}
 
 }

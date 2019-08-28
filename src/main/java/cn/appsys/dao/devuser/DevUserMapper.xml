@@ -9,4 +9,32 @@
 			</if>
 		</trim>
 	</select>
+	<!-- 注册devUser -->
+	<insert id="register" parameterType="DevUser">
+		insert into dev_user(devCode,devPassword)
+		values(#{devCode},#{devPassword})
+	</insert>
+	<!-- 校验devCode是否存在 -->
+	<select id="checkDevCode" parameterType="String" resultType="DevUser">
+		select * from dev_user where devCode=#{devCode}
+	</select>
+	<update id="updateDevUser" parameterType="DevUser">
+ 			update dev_user 
+ 			<trim prefix="set" suffixOverrides="," suffix="where id=#{id}">
+ 				<if test="devCode != null">devCode=#{devCode},</if>
+ 				<if test="devName != null">devName=#{devName},</if>
+ 				<if test="devPassword != null">devPassword=#{devPassword},</if>
+ 				<if test="devEmail != null">devEmail=#{devEmail},</if>
+ 				<if test="devInfo != null">devInfo=#{devInfo},</if>
+ 				<if test="createdBy != null">createdBy=#{createdBy},</if>
+ 				<if test="creationDate != null">creationDate=#{creationDate},</if>
+ 				<if test="modifyBy != null">modifyBy=#{modifyBy},</if>
+ 				<if test="modifyDate != null">modifyDate=#{modifyDate},</if>
+ 			</trim>
+ 			
+ 	</update>
+ 	<!-- 根据主键获取用户 -->
+	<select id="getDevUserById" parameterType="DevUser">
+		select * from dev_user where id=#{id}
+	</select>
 </mapper>

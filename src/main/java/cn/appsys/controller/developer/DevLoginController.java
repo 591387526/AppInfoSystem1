@@ -1,16 +1,23 @@
 package cn.appsys.controller.developer;
 
+import java.util.Date;
+
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import cn.appsys.entity.DevUser;
 import cn.appsys.service.developer.DevUserService;
 import cn.appsys.util.Constants;
+
 
 @Controller
 @RequestMapping(value="/dev")
@@ -19,6 +26,21 @@ public class DevLoginController {
 	
 	@Resource
 	private DevUserService devUserService;
+	
+	
+	@RequestMapping(value="/updDevUser",method=RequestMethod.GET)
+	public String getUpdUser(@PathVariable Integer id,Model model) {
+		DevUser devuser=devUserService.getDevUserById(id);
+		model.addAttribute("devuser",devuser);
+		return "developer/updDevUser";
+	}
+	@RequestMapping(value="/updUserSave",method=RequestMethod.POST)
+	public String getUpdUserSave(DevUser devuser,HttpSession session) {
+		devuser.setModifyBy(((DevUser)session.getAttribute("devuser")).getId());
+		devuser.setModifyDate(new Date());
+		devUserService.updateDevUser(devuser);
+		return "redirect:/flatform/main";
+	}
 	
 	@RequestMapping(value="/login")
 	public String login(){
@@ -62,6 +84,27 @@ public class DevLoginController {
 		//清除session
 		session.removeAttribute(Constants.DEV_USER_SESSION);
 		return "devlogin";
+	}
+	@RequestMapping(value="/register")
+	public String register(){
+		logger.debug("registerController welcome AppInfoSystem develpor==================");
+		return "devregister";
+	}
+	
+	@RequestMapping(value="/doregister",method=RequestMethod.POST)
+	public String doregister(@ModelAttribute("user")DevUser user, HttpServletRequest request){
+		logger.debug("doregister====================================");
+		//调用service方法，进行用户匹配
+		DevUser u=devUserService.checkDevCode(user.getDevCode());
+		if(u==null) {
+			devUserService.register(user); 
+			return "redirect:/dev/login";
+		}else {
+			request.setAttribute("error", "用户名已被注册");
+			return "devregister";
+		}
+
+		
 	}
 }
 

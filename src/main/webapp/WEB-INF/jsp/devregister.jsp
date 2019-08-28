@@ -32,7 +32,7 @@
       <div class="login_wrapper">
         <div class="animate form login_form">
           <section class="login_content">
-            <form action="dologin" method="post">
+            <form action="${pageContext.request.contextPath }/dev/doregister" method="post">
               <h1>APP开发者平台</h1>
               <div>
                 <input type="text" class="form-control" name="devCode" placeholder="请输入用户名" required="" />
@@ -42,16 +42,14 @@
               </div>
               <span>${error }</span>
               <div>
-              	<button type="submit" class="btn btn-success">登     录</button>
-              	<button type="reset" class="btn btn-default">重　填</button>
-              	 <a href="${pageContext.request.contextPath }/dev/register">注册</a>
+              	<button type="submit" class="btn btn-success">注     册</button>             	
               </div>
-
+				
               <div class="clearfix"></div>
 
               <div class="separator">
                 <div>
-                  <p>©2016 All Rights Reserved. </p>
+                  <p>©2019 All Rights Reserved. </p>
                 </div>
               </div>
             </form>
